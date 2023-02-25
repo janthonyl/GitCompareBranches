@@ -35,9 +35,8 @@ namespace GitCompareBranches
         {
             List<Commit> commits = new List<Commit>();
             string prefix = "@@##@@";
-            string args = @$"log -P <branch> -100    --format='<prefix>%h %s' ";
+            string args = @$"log  -P <branch>   --format='<prefix>%h %s' ";
             args = args.Replace("<branch>", branch).Replace("<prefix>", prefix).Replace('\'', '\"');
-            //string exe = @"C:\Program Files\Git\git-bash.exe";
             string exe = @"git";
             Process P = new Process();
             P.StartInfo = new ProcessStartInfo(exe, args);
@@ -47,10 +46,11 @@ namespace GitCompareBranches
             P.StartInfo.WorkingDirectory = pathToRepo;
             P.StartInfo.UseShellExecute = false;
             P.Start();
+            string[] lines = P.StandardOutput.ReadToEnd().Split(new string[] { prefix }, StringSplitOptions.RemoveEmptyEntries);
             P.WaitForExit();
             string err = P.StandardError.ReadToEnd();
+            P.Close();
             if (!string.IsNullOrWhiteSpace(err)) throw new Exception(err);
-            string[] lines = P.StandardOutput.ReadToEnd().Split(new string[] { prefix }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
                 if (line.Length < 10) continue;
@@ -104,8 +104,6 @@ namespace GitCompareBranches
             string branch2 = cboBranches2.SelectedItem?.ToString()?.Trim()?.TrimStart('*')?.Trim();
             if (branch1 == null || branch2 == null) return;
             List<Commit> commits1 = GetAllCommitsForThisBranch(branch1, txtRepo.Text);
-            MessageBox.Show("done");
-            return;
             List<Commit> commits2 = GetAllCommitsForThisBranch(branch2, txtRepo.Text);
             MessageBox.Show(commits1.Count.ToString());
             MessageBox.Show(commits2.Count.ToString());

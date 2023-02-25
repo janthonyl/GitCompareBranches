@@ -24,9 +24,8 @@ namespace GitCompareBranches
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
-
-           // pathToRepo = @"C:\A\Darsy-CMO";
+            txtRepo.Text = @"C:\A\Darsy-CMO";
+            populateBranchesDropDowns(txtRepo.Text);
         }
 
         private List<Commit> GetAllCommitsForThisBranch(string branch, string pathToRepo)
@@ -59,14 +58,20 @@ namespace GitCompareBranches
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             if (fbd.ShowDialog() != DialogResult.OK) return;
             txtRepo.Text = fbd.SelectedPath;
-            List<string> branches = GetListOfBranchesInThisRepo(fbd.SelectedPath);
+            populateBranchesDropDowns(fbd.SelectedPath);
+            
+        }
+        private void populateBranchesDropDowns(string pathToRepo)
+        {
+            List<string> branches = GetListOfBranchesInThisRepo(pathToRepo);
             cboBranches1.Items.Clear();
             cboBranches2.Items.Clear();
             foreach (string branch in branches)
             {
-                cboBranches1.Items.Add(branch);              
+                cboBranches1.Items.Add(branch);
                 cboBranches2.Items.Add(branch);
             }
+
         }
 
         private List<string> GetListOfBranchesInThisRepo(string pathToRepo)
@@ -84,6 +89,15 @@ namespace GitCompareBranches
             return branches.OrderBy(b=>b).ToList();
         }
 
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            string branch1 = cboBranches1.SelectedItem?.ToString()?.Trim()?.TrimStart('*');
+            string branch2 = cboBranches2.SelectedItem?.ToString()?.Trim()?.TrimStart('*');
+            if (branch1 == null || branch2 == null) return;
 
+
+
+
+        }
     }
 }

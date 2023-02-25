@@ -26,21 +26,30 @@ namespace GitCompareBranches
         {
             txtRepo.Text = @"C:\A\Darsy-CMO";
             populateBranchesDropDowns(txtRepo.Text);
+            cboBranches1.SelectedItem = cboBranches1.Items[0];
+            cboBranches2.SelectedItem = cboBranches1.Items[0];
+
         }
 
         private List<Commit> GetAllCommitsForThisBranch(string branch, string pathToRepo)
         {
             List<Commit> commits = new List<Commit>();
             string prefix = "@@##@@";
-            string args = $"log  -5 <branch>  --format='<prefix>%h %s'  ";
+            string args = @$"log -P <branch> -100    --format='<prefix>%h %s' ";
             args = args.Replace("<branch>", branch).Replace("<prefix>", prefix).Replace('\'', '\"');
+            //string exe = @"C:\Program Files\Git\git-bash.exe";
+            string exe = @"git";
             Process P = new Process();
-            P.StartInfo = new ProcessStartInfo("git", args);
+            P.StartInfo = new ProcessStartInfo(exe, args);
             P.StartInfo.RedirectStandardOutput = true; //Necessary to capture the output. 
+            P.StartInfo.RedirectStandardError = true;
+            P.StartInfo.RedirectStandardInput = true;           
             P.StartInfo.WorkingDirectory = pathToRepo;
             P.StartInfo.UseShellExecute = false;
             P.Start();
             P.WaitForExit();
+            string err = P.StandardError.ReadToEnd();
+            if (!string.IsNullOrWhiteSpace(err)) throw new Exception(err);
             string[] lines = P.StandardOutput.ReadToEnd().Split(new string[] { prefix }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines)
             {
@@ -59,7 +68,7 @@ namespace GitCompareBranches
             if (fbd.ShowDialog() != DialogResult.OK) return;
             txtRepo.Text = fbd.SelectedPath;
             populateBranchesDropDowns(fbd.SelectedPath);
-            
+
         }
         private void populateBranchesDropDowns(string pathToRepo)
         {
@@ -76,7 +85,7 @@ namespace GitCompareBranches
 
         private List<string> GetListOfBranchesInThisRepo(string pathToRepo)
         {
-            List<Commit> commits = new List<Commit>();            
+            List<Commit> commits = new List<Commit>();
             string args = $"branch ";
             Process P = new Process();
             P.StartInfo = new ProcessStartInfo("git", args);
@@ -85,15 +94,23 @@ namespace GitCompareBranches
             P.StartInfo.UseShellExecute = false;
             P.Start();
             P.WaitForExit();
-            string[] branches = P.StandardOutput.ReadToEnd().Split(new char[] { '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
-            return branches.OrderBy(b=>b).ToList();
+            string[] branches = P.StandardOutput.ReadToEnd().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            return branches.OrderBy(b => b).ToList();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            string branch1 = cboBranches1.SelectedItem?.ToString()?.Trim()?.TrimStart('*');
-            string branch2 = cboBranches2.SelectedItem?.ToString()?.Trim()?.TrimStart('*');
+            string branch1 = cboBranches1.SelectedItem?.ToString()?.Trim()?.TrimStart('*')?.Trim();
+            string branch2 = cboBranches2.SelectedItem?.ToString()?.Trim()?.TrimStart('*')?.Trim();
             if (branch1 == null || branch2 == null) return;
+            List<Commit> commits1 = GetAllCommitsForThisBranch(branch1, txtRepo.Text);
+            MessageBox.Show("done");
+            return;
+            List<Commit> commits2 = GetAllCommitsForThisBranch(branch2, txtRepo.Text);
+            MessageBox.Show(commits1.Count.ToString());
+            MessageBox.Show(commits2.Count.ToString());
+
+
 
 
 

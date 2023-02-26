@@ -33,6 +33,8 @@ namespace GitCompareBranches
                 cboBranches2.SelectedItem = "master";
             }
             catch { }
+            dgBranch1.DataSource = new List<Commit>();
+            dgBranch2.DataSource = new List<Commit>();
         }
 
         private char space = Convert.ToChar(32);
@@ -110,6 +112,9 @@ namespace GitCompareBranches
             foreach (Commit c in commits2) if (!all_1.ContainsKey(c.msg)) In2ButButNotIn1.Add(c);
             In1ButButNotIn2 = RemoveCommitsInvolvingUnwantedFolders(In1ButButNotIn2);
             In2ButButNotIn1 = RemoveCommitsInvolvingUnwantedFolders(In2ButButNotIn1);
+            dgBranch1.DataSource = In1ButButNotIn2;
+            dgBranch2.DataSource = In2ButButNotIn1;
+            
         }
 
         private void btnFoldersToInclude_Click(object sender, EventArgs e)
@@ -137,6 +142,7 @@ namespace GitCompareBranches
                 bool Include = files.Any(file => folders.Any(fold => file.ToLower().StartsWith(fold)));
                 if (Include) KeepTheseCommits.Add(c);
             }
+            KeepTheseCommits  = KeepTheseCommits.OrderBy(k=>k.msg).ToList();
             return KeepTheseCommits;
         }
 

@@ -30,8 +30,10 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dgBranch2 = new System.Windows.Forms.DataGridView();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgBranch1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnClearFolders = new System.Windows.Forms.Button();
             this.btnFoldersToInclude = new System.Windows.Forms.Button();
@@ -46,7 +48,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBranch2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBranch1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,8 +69,10 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.LightSalmon;
+            this.tabPage1.Controls.Add(this.dgBranch2);
+            this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.dataGridView1);
+            this.tabPage1.Controls.Add(this.dgBranch1);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
@@ -76,23 +81,50 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
+            // dgBranch2
+            // 
+            this.dgBranch2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgBranch2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgBranch2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgBranch2.Location = new System.Drawing.Point(675, 124);
+            this.dgBranch2.Name = "dgBranch2";
+            this.dgBranch2.ReadOnly = true;
+            this.dgBranch2.RowTemplate.Height = 25;
+            this.dgBranch2.Size = new System.Drawing.Size(736, 264);
+            this.dgBranch2.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1235, 106);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(173, 15);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "In Branch-2 But Missing From 1";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 151);
+            this.label3.Location = new System.Drawing.Point(8, 106);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 15);
+            this.label3.Size = new System.Drawing.Size(173, 15);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Branches1";
+            this.label3.Text = "In Branch-1 But Missing From 2";
             // 
-            // dataGridView1
+            // dgBranch1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(-4, 179);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(624, 150);
-            this.dataGridView1.TabIndex = 4;
+            this.dgBranch1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgBranch1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgBranch1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgBranch1.Location = new System.Drawing.Point(6, 124);
+            this.dgBranch1.Name = "dgBranch1";
+            this.dgBranch1.ReadOnly = true;
+            this.dgBranch1.RowTemplate.Height = 25;
+            this.dgBranch1.Size = new System.Drawing.Size(666, 264);
+            this.dgBranch1.TabIndex = 4;
             // 
             // panel1
             // 
@@ -171,9 +203,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(376, 38);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 15);
+            this.label2.Size = new System.Drawing.Size(53, 15);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Branches2";
+            this.label2.Text = "Branch 2";
             // 
             // cboBranches1
             // 
@@ -198,11 +230,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 33);
+            this.label1.Location = new System.Drawing.Point(3, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 15);
+            this.label1.Size = new System.Drawing.Size(53, 15);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Branches1";
+            this.label1.Text = "Branch 1";
             // 
             // txtRepo
             // 
@@ -237,7 +269,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBranch2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgBranch1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -258,9 +291,11 @@
         private ComboBox cboBranches1;
         private Button btnRefresh;
         private Label label3;
-        private DataGridView dataGridView1;
+        private DataGridView dgBranch1;
         private Button btnFoldersToInclude;
         private ComboBox cboFoldersToInclude;
         private Button btnClearFolders;
+        private DataGridView dgBranch2;
+        private Label label4;
     }
 }

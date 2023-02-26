@@ -16,11 +16,7 @@ namespace GitCompareBranches
         {
             public string hash { get; set; }
             public string msg { get; set; }
-            public List<FileInfo> files { get; set; }
-            public Commit()
-            {
-                files = new List<FileInfo>();
-            }
+            public DateTime dateTime { get; set; }            
         }
 
 
@@ -49,7 +45,7 @@ namespace GitCompareBranches
             DataGridView dg = (DataGridView)sender;
             if (e.ColumnIndex < 0) return; //He clicked outside the grid, i.e. in the grid margin
             if (e.RowIndex > -1) return;//He clicked a row of data, not the column header
-            //Arriving here means he clicked a column hader. Sort the underlying data on that column.
+            //Arriving here means he clicked a column header. Sort the underlying data on that column.
             string colName = dg.Columns[e.ColumnIndex].Name;
             BindingSource BS = (BindingSource)dg.DataSource;
             List<Commit> commits = (List<Commit>)BS.DataSource;
@@ -64,7 +60,6 @@ namespace GitCompareBranches
         }
         private void DgBranch2_CellContentClick(object? sender, DataGridViewCellEventArgs e)
         {
-
             SortTheGrid(sender, e, ref boolSortAscending2);
         }
 
@@ -144,6 +139,7 @@ namespace GitCompareBranches
             foreach (Commit c in commits2) if (!all_1.ContainsKey(c.msg)) In2ButButNotIn1.Add(c);
             In1ButButNotIn2 = RemoveCommitsInvolvingUnwantedFolders(In1ButButNotIn2);
             In2ButButNotIn1 = RemoveCommitsInvolvingUnwantedFolders(In2ButButNotIn1);
+            foreach (Commit c in In2ButButNotIn1.Concat(In1ButButNotIn2)) c.dateTime = GetTheDateOfThisCommit(c.hash);
             dgBranch1.DataSource = new BindingSource { DataSource = In1ButButNotIn2 };
             dgBranch2.DataSource = new BindingSource { DataSource = In2ButButNotIn1 };             
         }
@@ -173,7 +169,7 @@ namespace GitCompareBranches
                 bool Include = files.Any(file => folders.Any(fold => file.ToLower().StartsWith(fold)));
                 if (Include) KeepTheseCommits.Add(c);
             }
-            KeepTheseCommits  = KeepTheseCommits.OrderBy(k=>k.msg).ToList();
+            KeepTheseCommits  = KeepTheseCommits.OrderBy(k=>k.dateTime).ToList();
             return KeepTheseCommits;
         }
 
@@ -213,7 +209,14 @@ namespace GitCompareBranches
             return IsMerge;
         }
 
-
+        private DateTime GetTheDateOfThisCommit(string hash)
+        {
+            string args = @$"log commit -1 --format='%ad' --date=iso-strict".Replace("commit", hash).Replace('\'', '\"');
+            string strOutput = RunGitCommand("git", args, txtRepo.Text);
+            strOutput = strOutput.Replace('%'.ToString(), string.Empty);
+            DateTime dateTime = DateTime.Parse(strOutput);
+            return dateTime;            
+        }
 
 
     }

@@ -83,6 +83,9 @@
             // 
             // dgBranch2
             // 
+            this.dgBranch2.AllowUserToAddRows = false;
+            this.dgBranch2.AllowUserToDeleteRows = false;
+            this.dgBranch2.AllowUserToResizeRows = false;
             this.dgBranch2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgBranch2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -115,6 +118,8 @@
             // 
             // dgBranch1
             // 
+            this.dgBranch1.AllowUserToAddRows = false;
+            this.dgBranch1.AllowUserToDeleteRows = false;
             this.dgBranch1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dgBranch1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;

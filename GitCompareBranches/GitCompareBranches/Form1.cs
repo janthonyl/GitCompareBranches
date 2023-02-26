@@ -1,3 +1,4 @@
+using GitCompareBranches.Models;
 using System.Diagnostics;
 using System.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
@@ -33,9 +34,40 @@ namespace GitCompareBranches
                 cboBranches2.SelectedItem = "master";
             }
             catch { }
-            dgBranch1.DataSource = new List<Commit>();
-            dgBranch2.DataSource = new List<Commit>();
+            dgBranch1.DataSource = new BindingSource { DataSource = new List<Commit>() };
+            dgBranch2.DataSource = new BindingSource { DataSource = new List<Commit>() };
+            dgBranch1.CellContentClick += DgBranch1_CellContentClick;
+            dgBranch2.CellContentClick += DgBranch2_CellContentClick;
+
         }
+
+        private bool boolSortAscending1;
+        private bool boolSortAscending2;
+
+        private  void SortTheGrid(object? sender, DataGridViewCellEventArgs e, ref bool boolSortAscending)
+        {
+            DataGridView dg = (DataGridView)sender;
+            if (e.ColumnIndex < 0) return; //He clicked outside the grid, i.e. in the grid margin
+            if (e.RowIndex > -1) return;//He clicked a row of data, not the column header
+            //Arriving here means he clicked a column hader. Sort the underlying data on that column.
+            string colName = dg.Columns[e.ColumnIndex].Name;
+            BindingSource BS = (BindingSource)dg.DataSource;
+            List<Commit> commits = (List<Commit>)BS.DataSource;
+            commits.Sort(new SpecificationForSortingPropertiesOrFields<Commit>(colName, boolSortAscending));
+            BS.ResetBindings(false);
+            boolSortAscending = !boolSortAscending;
+        }
+
+        private void DgBranch1_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            SortTheGrid(sender, e, ref boolSortAscending1);
+        }
+        private void DgBranch2_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+
+            SortTheGrid(sender, e, ref boolSortAscending2);
+        }
+
 
         private char space = Convert.ToChar(32);
 
@@ -112,9 +144,8 @@ namespace GitCompareBranches
             foreach (Commit c in commits2) if (!all_1.ContainsKey(c.msg)) In2ButButNotIn1.Add(c);
             In1ButButNotIn2 = RemoveCommitsInvolvingUnwantedFolders(In1ButButNotIn2);
             In2ButButNotIn1 = RemoveCommitsInvolvingUnwantedFolders(In2ButButNotIn1);
-            dgBranch1.DataSource = In1ButButNotIn2;
-            dgBranch2.DataSource = In2ButButNotIn1;
-            
+            dgBranch1.DataSource = new BindingSource { DataSource = In1ButButNotIn2 };
+            dgBranch2.DataSource = new BindingSource { DataSource = In2ButButNotIn1 };             
         }
 
         private void btnFoldersToInclude_Click(object sender, EventArgs e)

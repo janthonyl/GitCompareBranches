@@ -30,7 +30,12 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnClearFolders = new System.Windows.Forms.Button();
+            this.btnFoldersToInclude = new System.Windows.Forms.Button();
+            this.cboFoldersToInclude = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.cboBranches2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,6 +46,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,23 +60,48 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(839, 422);
+            this.tabControl1.Size = new System.Drawing.Size(1425, 422);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.LightSalmon;
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(831, 394);
+            this.tabPage1.Size = new System.Drawing.Size(1417, 394);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 151);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 15);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Branches1";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(-4, 179);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.Size = new System.Drawing.Size(624, 150);
+            this.dataGridView1.TabIndex = 4;
+            // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Silver;
+            this.panel1.Controls.Add(this.btnClearFolders);
+            this.panel1.Controls.Add(this.btnFoldersToInclude);
+            this.panel1.Controls.Add(this.cboFoldersToInclude);
             this.panel1.Controls.Add(this.btnRefresh);
             this.panel1.Controls.Add(this.cboBranches2);
             this.panel1.Controls.Add(this.label2);
@@ -80,8 +111,40 @@
             this.panel1.Controls.Add(this.txtRepo);
             this.panel1.Location = new System.Drawing.Point(5, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(820, 69);
+            this.panel1.Size = new System.Drawing.Size(1406, 97);
             this.panel1.TabIndex = 3;
+            // 
+            // btnClearFolders
+            // 
+            this.btnClearFolders.AutoSize = true;
+            this.btnClearFolders.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClearFolders.Location = new System.Drawing.Point(1336, 64);
+            this.btnClearFolders.Name = "btnClearFolders";
+            this.btnClearFolders.Size = new System.Drawing.Size(44, 25);
+            this.btnClearFolders.TabIndex = 11;
+            this.btnClearFolders.Text = "Clear";
+            this.btnClearFolders.UseVisualStyleBackColor = true;
+            this.btnClearFolders.Click += new System.EventHandler(this.btnClearFolders_Click);
+            // 
+            // btnFoldersToInclude
+            // 
+            this.btnFoldersToInclude.AutoSize = true;
+            this.btnFoldersToInclude.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnFoldersToInclude.Location = new System.Drawing.Point(3, 62);
+            this.btnFoldersToInclude.Name = "btnFoldersToInclude";
+            this.btnFoldersToInclude.Size = new System.Drawing.Size(112, 25);
+            this.btnFoldersToInclude.TabIndex = 10;
+            this.btnFoldersToInclude.Text = "Folders To Include";
+            this.btnFoldersToInclude.UseVisualStyleBackColor = true;
+            this.btnFoldersToInclude.Click += new System.EventHandler(this.btnFoldersToInclude_Click);
+            // 
+            // cboFoldersToInclude
+            // 
+            this.cboFoldersToInclude.FormattingEnabled = true;
+            this.cboFoldersToInclude.Location = new System.Drawing.Point(121, 64);
+            this.cboFoldersToInclude.Name = "cboFoldersToInclude";
+            this.cboFoldersToInclude.Size = new System.Drawing.Size(1209, 23);
+            this.cboFoldersToInclude.TabIndex = 9;
             // 
             // btnRefresh
             // 
@@ -149,7 +212,7 @@
             this.txtRepo.Location = new System.Drawing.Point(59, 0);
             this.txtRepo.Name = "txtRepo";
             this.txtRepo.ReadOnly = true;
-            this.txtRepo.Size = new System.Drawing.Size(758, 29);
+            this.txtRepo.Size = new System.Drawing.Size(1344, 29);
             this.txtRepo.TabIndex = 1;
             // 
             // tabPage2
@@ -157,7 +220,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(831, 394);
+            this.tabPage2.Size = new System.Drawing.Size(1417, 394);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -166,13 +229,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(844, 438);
+            this.ClientSize = new System.Drawing.Size(1430, 438);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -192,5 +257,10 @@
         private Label label2;
         private ComboBox cboBranches1;
         private Button btnRefresh;
+        private Label label3;
+        private DataGridView dataGridView1;
+        private Button btnFoldersToInclude;
+        private ComboBox cboFoldersToInclude;
+        private Button btnClearFolders;
     }
 }

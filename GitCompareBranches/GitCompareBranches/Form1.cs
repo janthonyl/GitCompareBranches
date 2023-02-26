@@ -20,7 +20,6 @@ namespace GitCompareBranches
             {
                 files = new List<FileInfo>();
             }
-
         }
 
 
@@ -38,7 +37,7 @@ namespace GitCompareBranches
 
         private char space = Convert.ToChar(32);
 
-        private List<Commit> GetAllCommitsForThisBranch(string branch, string pathToRepo)
+        private List<Commit> GetTheListOfCommitsForThisBranch(string branch, string pathToRepo)
         {
 
             List<Commit> commits = new List<Commit>();
@@ -70,7 +69,7 @@ namespace GitCompareBranches
         }
         private void populateBranchesDropDowns(string pathToRepo)
         {
-            List<string> branches = GetListOfBranchesInThisRepo(pathToRepo);
+            List<string> branches = GetTheListOfBranchesInThisRepo(pathToRepo);
             cboBranches1.Items.Clear();
             cboBranches2.Items.Clear();
             foreach (string branch in branches)
@@ -78,10 +77,9 @@ namespace GitCompareBranches
                 cboBranches1.Items.Add(branch);
                 cboBranches2.Items.Add(branch);
             }
-
         }
 
-        private List<string> GetListOfBranchesInThisRepo(string pathToRepo)
+        private List<string> GetTheListOfBranchesInThisRepo(string pathToRepo)
         {
             List<Commit> commits = new List<Commit>();
             string args = $"branch ";
@@ -100,8 +98,8 @@ namespace GitCompareBranches
             string branch1 = cboBranches1.SelectedItem?.ToString();
             string branch2 = cboBranches2.SelectedItem?.ToString();
             if (branch1 == null || branch2 == null) return;
-            List<Commit> commits1 = GetAllCommitsForThisBranch(branch1, txtRepo.Text);
-            List<Commit> commits2 = GetAllCommitsForThisBranch(branch2, txtRepo.Text);
+            List<Commit> commits1 = GetTheListOfCommitsForThisBranch(branch1, txtRepo.Text);
+            List<Commit> commits2 = GetTheListOfCommitsForThisBranch(branch2, txtRepo.Text);
             Dictionary<string, Commit> all_1 = new Dictionary<string, Commit>();
             foreach (Commit c in commits1) if (!all_1.ContainsKey(c.msg)) all_1.Add(c.msg, c);
             Dictionary<string, Commit> all_2 = new Dictionary<string, Commit>();
@@ -133,18 +131,18 @@ namespace GitCompareBranches
             List<Commit> KeepTheseCommits = new List<Commit>();
             foreach (Commit c in commits)
             {
-                bool IsMerge = ThisCommitIsAMerge(c);
+                bool IsMerge = ThisCommitIsAMerge(c.hash);
                 if (IsMerge) continue;
-                List<string> files = GetFilesInThisCommit(c);
-                bool Include = files.Any(file => folders.Any(fold => fold.StartsWith(file.ToLower();
+                List<string> files = GetTheListOfFilesInThisCommit(c);
+                bool Include = files.Any(file => folders.Any(fold => file.ToLower().StartsWith(fold)));
                 if (Include) KeepTheseCommits.Add(c);
             }
             return KeepTheseCommits;
         }
 
-        private List<string> GetFilesInThisCommit(Commit commit)
+        private List<string> GetTheListOfFilesInThisCommit(Commit commit)
         {
-            string args = @$"diff  -P commit~1 commit".Replace("commit", commit.hash);
+            string args = @$"diff  -P commit~1 commit --name-only".Replace("commit", commit.hash);
             string strOutput = RunGitCommand("git", args, txtRepo.Text);
             string[] partialPaths =strOutput.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             List<string> fullPaths = partialPaths.Select(p => txtRepo.Text + @"\" + p).Select(f => f.Replace("/", @"\")).ToList();
@@ -169,9 +167,9 @@ namespace GitCompareBranches
             return strOutput;
         }
 
-        private bool ThisCommitIsAMerge(Commit commit)
+        private bool ThisCommitIsAMerge(string hash)
         {
-            string args = @$" log --pretty=%P -n 1 commit".Replace("commit", commit.hash);
+            string args = @$" log --pretty=%P -n 1 commit".Replace("commit", hash);
             string strOutput = RunGitCommand("git", args, txtRepo.Text);
             string[] hashes = strOutput.Split(new char[] { space, '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             bool IsMerge = hashes.Length > 1;

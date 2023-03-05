@@ -1,7 +1,18 @@
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using GitCompareBranches.Models;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
+using Bold = DocumentFormat.OpenXml.Spreadsheet.Bold;
+using Border = DocumentFormat.OpenXml.Spreadsheet.Border;
+using Fonts = DocumentFormat.OpenXml.Spreadsheet.Fonts;
+using FontSize = DocumentFormat.OpenXml.Spreadsheet.FontSize;
+using NumberingFormat = DocumentFormat.OpenXml.Spreadsheet.NumberingFormat;
+using Text = DocumentFormat.OpenXml.Spreadsheet.Text;
 
 namespace GitCompareBranches
 {
@@ -12,29 +23,61 @@ namespace GitCompareBranches
             InitializeComponent();
         }
 
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            List<Employee> employees = CreateSampleEmployees();
+            string destFile = "C:\\test\\1.xlsx";
+            if (File.Exists(destFile)) File.Delete(destFile);
+            //Define the columns and, where desired, specify an integer as a StyleIndex for that column. 
+            List<ExcelExport<Employee>.objColumn> columns = new List<ExcelExport<Employee>.objColumn>
+            {
+                new ExcelExport<Employee>.objColumn("ID", ExcelExport<Employee>.DataTypes.Number),
+                new ExcelExport<Employee>.objColumn("Name", ExcelExport<Employee>.DataTypes.Text),
+                new ExcelExport<Employee>.objColumn("Email", ExcelExport<Employee>.DataTypes.Text),
+                new ExcelExport<Employee>.objColumn("HireDate", ExcelExport<Employee>.DataTypes.Date, 4),
+            };
+            ExcelExport<Employee> exporter = new ExcelExport<Employee>();
+            using (FileStream fs = File.Create(destFile)) exporter.ExportToExcel(fs, employees, "Employees", columns);
+
+
+        }
+
+        public List<Employee> CreateSampleEmployees() //Sample data will be 100 rows of employees. 
+        {
+            List<Employee> employees = new List<Employee>(); ;
+            for (int i = 1; i <= 100; i++)
+            {
+                Employee e = new Employee
+                {
+                    Name = $"Employee-{i}",
+                    Email = $"Employee-{i}-@yahoo.com",
+                    ID = i + 125456789.1234m,
+                    HireDate = DateTime.Now.AddDays(i),
+                };
+                employees.Add(e);
+            }
+            return employees;
+        }
+
+        public class Employee
+        {
+            public string Name;
+            public string Email;
+            public decimal ID;
+            public DateTime HireDate;
+            
+        }
+
+        
+
+
+
         private class Commit
         {
             public string hash { get; set; }
             public string msg { get; set; }
-            public DateTime dateTime { get; set; }            
-        }
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                txtRepo.Text = @"C:\A\Darsy-CMO";
-                populateBranchesDropDowns(txtRepo.Text);
-                cboBranches1.SelectedItem = "dev";
-                cboBranches2.SelectedItem = "master";
-            }
-            catch { }
-            dgBranch1.DataSource = new BindingSource { DataSource = new List<Commit>() };
-            dgBranch2.DataSource = new BindingSource { DataSource = new List<Commit>() };
-            dgBranch1.CellContentClick += DgBranch1_CellContentClick;
-            dgBranch2.CellContentClick += DgBranch2_CellContentClick;
-
+            public DateTime dateTime { get; set; }
         }
 
         private bool boolSortAscending1;

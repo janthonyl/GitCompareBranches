@@ -32,10 +32,10 @@ namespace GitCompareBranches
             //Define the columns and, where desired, specify an integer as a StyleIndex for that column. 
             List<ExcelExport<Employee>.objColumn> columns = new List<ExcelExport<Employee>.objColumn>
             {
-                new ExcelExport<Employee>.objColumn("ID", ExcelExport<Employee>.DataTypes.Number),
-                new ExcelExport<Employee>.objColumn("Name", ExcelExport<Employee>.DataTypes.Text),
+                new ExcelExport<Employee>.objColumn("ID", ExcelExport<Employee>.DataTypes.Number, "The ID"),
+                new ExcelExport<Employee>.objColumn("Name", ExcelExport<Employee>.DataTypes.Text, "The Name"),
                 new ExcelExport<Employee>.objColumn("Email", ExcelExport<Employee>.DataTypes.Text),
-                new ExcelExport<Employee>.objColumn("HireDate", ExcelExport<Employee>.DataTypes.Date, 4),
+                new ExcelExport<Employee>.objColumn("HireDate", ExcelExport<Employee>.DataTypes.Date, "The Hire Date", 4),
             };
             ExcelExport<Employee> exporter = new ExcelExport<Employee>();
             using (FileStream fs = File.Create(destFile)) exporter.ExportToExcel(fs, employees, "Employees", columns);

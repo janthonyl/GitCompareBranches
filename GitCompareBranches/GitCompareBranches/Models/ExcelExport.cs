@@ -37,16 +37,18 @@ namespace GitCompareBranches.Models
         public class objColumn
         {
             public string Name;
+            public string DisplayName;
             public DataTypes DataType;
             public UInt32? StyleIndex;
             public PropertyInfo propInfo;
             public FieldInfo fieldInfo;
             /// <param name="StyleIndex">The index of the CellFormat, if you created any ExtraCellFormats</param>
-            public objColumn(string Name, DataTypes DataType, UInt32? StyleIndex = null)
+            public objColumn(string Name, DataTypes DataType, string DisplayName = null, UInt32? StyleIndex = null)
             {
                 this.Name = Name;
                 this.DataType = DataType;
                 this.StyleIndex = StyleIndex;
+                this.DisplayName = DisplayName ?? Name;
             }
         }
 
@@ -73,7 +75,7 @@ namespace GitCompareBranches.Models
                 Row headersRow = new Row(); //First row has column headers.
                 foreach (objColumn col in Columns)
                 {
-                    Cell c = AddCellWithText(col.Name);
+                    Cell c = AddCellWithText(col.DisplayName);
                     c.StyleIndex = 1; //Bold-text style. 
                     headersRow.AppendChild(c); //header
                 }

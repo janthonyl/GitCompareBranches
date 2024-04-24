@@ -124,6 +124,7 @@ namespace GitCompareBranches
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            btnRefresh.BackColor = Color.Lime;
             string branch1 = cboBranches1.SelectedItem?.ToString();
             string branch2 = cboBranches2.SelectedItem?.ToString();
             if (branch1 == null || branch2 == null) return;
@@ -191,6 +192,7 @@ namespace GitCompareBranches
             P.StartInfo.RedirectStandardInput = true;
             P.StartInfo.WorkingDirectory = txtRepo.Text;
             P.StartInfo.UseShellExecute = false;
+            P.StartInfo.CreateNoWindow = true;
             P.Start();
             string strOutput = P.StandardOutput.ReadToEnd();
             P.WaitForExit();

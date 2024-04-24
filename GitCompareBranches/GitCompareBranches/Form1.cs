@@ -144,6 +144,7 @@ namespace GitCompareBranches
             dgBranch1.DataSource = new BindingSource { DataSource = In1ButButNotIn2 };
             dgBranch2.DataSource = new BindingSource { DataSource = In2ButButNotIn1 };
             btnRefresh.BackColor = Color.White;
+            MessageBox.Show("Finished");
         }
 
         private void btnFoldersToInclude_Click(object sender, EventArgs e)

@@ -142,7 +142,8 @@ namespace GitCompareBranches
             In2ButButNotIn1 = RemoveCommitsInvolvingUnwantedFolders(In2ButButNotIn1);
             foreach (Commit c in In2ButButNotIn1.Concat(In1ButButNotIn2)) c.dateTime = GetTheDateOfThisCommit(c.hash);
             dgBranch1.DataSource = new BindingSource { DataSource = In1ButButNotIn2 };
-            dgBranch2.DataSource = new BindingSource { DataSource = In2ButButNotIn1 };             
+            dgBranch2.DataSource = new BindingSource { DataSource = In2ButButNotIn1 };
+            btnRefresh.BackColor = Color.White;
         }
 
         private void btnFoldersToInclude_Click(object sender, EventArgs e)
